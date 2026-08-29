@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<meta content="#0b1220" name="theme-color"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="Шкільний календар" name="apple-mobile-web-app-title"/>
+<title>Шкільний календар</title>
+<link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='42' fill='%230b1220'/%3E%3Crect x='32' y='45' width='116' height='104' rx='18' fill='%23ffffff'/%3E%3Crect x='32' y='45' width='116' height='34' rx='18' fill='%232563eb'/%3E%3Ccircle cx='61' cy='45' r='8' fill='%23ffffff'/%3E%3Ccircle cx='119' cy='45' r='8' fill='%23ffffff'/%3E%3Cpath d='M58 101l19 19 44-46' fill='none' stroke='%2316a34a' stroke-width='11' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" rel="apple-touch-icon"/>
+<link href="style.css" rel="stylesheet"/></head>
+<body>
+<input accept=".csv,text/csv" hidden="" id="fileInput" type="file"/>
+<div class="app">
+<section class="hero">
+<div>
+<div class="eyebrow">Rheingauschule</div>
+<h1 id="heroTitle">Шкільний календар</h1>
+<p id="heroSubtitle">Червень 2026 — Серпень 2027 · 79 подій · український переклад</p>
+</div>
+<div class="hero-actions">
+<button class="btn btn-primary" id="loadBtn">＋ Оновити з CSV</button>
+<button aria-label="Змінити тему" class="btn btn-secondary" id="themeBtn">◐</button>
+</div>
+</section>
+<div class="toolbar">
+<div class="toolbar-card">
+<div class="search-wrap"><input autocomplete="off" class="control" id="searchInput" placeholder="Пошук подій, опису або місця…" type="search"/></div>
+<select aria-label="Фільтр за типом" class="control" id="typeFilter"><option value="">Усі типи подій</option></select>
+<div class="toolbar-buttons">
+<button class="btn btn-ghost" id="todayBtn">Сьогодні</button>
+<button class="btn btn-ghost" id="agendaBtn">Найближчі</button>
+</div>
+</div>
+</div>
+<div class="notice" id="notice"></div><noscript>Для роботи інтерактивного календаря потрібен JavaScript.</noscript>
+<section class="stats">
+<div class="stat"><div class="k">Усього подій</div><div class="v" id="statEvents">0</div><div class="s" id="statRange">дані завантажуються</div></div>
+<div class="stat"><div class="k">Дні з подіями</div><div class="v" id="statDays">0</div><div class="s">унікальних дат початку</div></div>
+<div class="stat"><div class="k">Найближча подія</div><div class="v" id="statNext">—</div><div class="s" id="statNextName"></div></div>
+<div class="stat"><div class="k">Активний фільтр</div><div class="v" id="statFiltered">0</div><div class="s">видимих подій</div></div>
+</section>
+<section class="legend" id="legend"></section>
+<section class="agenda" id="agenda">
+<h2>Найближчі події</h2>
+<div id="agendaList"></div>
+</section>
+<div class="month-mobile-nav">
+<button aria-label="Попередній місяць" class="btn btn-ghost" id="prevMonth">←</button>
+<strong id="mobileMonthTitle">Серпень 2026</strong>
+<button aria-label="Наступний місяць" class="btn btn-ghost" id="nextMonth">→</button>
+</div>
+<main class="calendar-grid" id="calendar"></main>
+<div class="drop-zone" id="dropZone">
+    У календар уже вбудовано всі події. За потреби CSV можна використати лише для оновлення даних.
+  </div>
+<div class="footer">Події вже включені до опублікованої версії календаря. CSV потрібен лише для подальшого оновлення даних.</div>
+</div>
+<div aria-hidden="true" aria-modal="true" class="modal-backdrop" id="modalBackdrop" role="dialog">
+<div class="modal">
+<div class="modal-head">
+<div>
+<div class="eyebrow" id="modalType"></div>
+<div class="modal-title" id="modalTitle"></div>
+</div>
+<button aria-label="Закрити" class="icon-btn" id="modalClose">×</button>
+</div>
+<div class="modal-body">
+<div class="meta-grid" id="modalMeta"></div>
+<div class="description" id="modalDesc"></div>
+</div>
+</div>
+</div>
+
+<script src="events-1.js"></script><script src="events-2.js"></script><script src="app-1a.js"></script><script src="app-1b.js"></script><script src="app-2.js"></script><script src="app-3.js"></script></body>
+</html>
