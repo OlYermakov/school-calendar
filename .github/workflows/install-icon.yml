@@ -16,7 +16,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Create PNG icon
-        run: base64 --decode .icon.b64 > apple-touch-icon.png
+        run: |
+          base64 --ignore-garbage --decode .icon.b64 > apple-touch-icon.png
+          test "$(head -c 8 apple-touch-icon.png | xxd -p)" = "89504e470d0a1a0a"
 
       - name: Update calendar icon links
         run: python3 scripts/install_icon.py
