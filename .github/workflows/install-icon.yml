@@ -3,7 +3,7 @@ name: Install school calendar app icon
 on:
   push:
     paths:
-      - '.github/workflows/install-icon.yml'
+      - .github/workflows/install-icon.yml
 
 permissions:
   contents: write
@@ -15,40 +15,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build icon and update HTML
-        shell: bash
+      - name: Create PNG icon
+        run: base64 --decode .icon.b64 > apple-touch-icon.png
+
+      - name: Update calendar icon links
+        run: python3 scripts/install_icon.py
+
+      - name: Remove temporary icon data
         run: |
-          base64 --decode .icon.b64 > apple-touch-icon.png
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-
-          path = Path('index.html')
-          html = path.read_text(encoding='utf-8')
-
-          # Remove old app/fav icon declarations so iOS does not keep using the previous SVG icon.
-          html = re.sub(r'\n?<link\s+rel=["\'](?:apple-touch-icon|icon|shortcut icon)["\'][^>]*>', '', html, flags=re.I)
-
-          tags = '''\n<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
-<link rel="shortcut icon" type="image/png" href="apple-touch-icon.png">'''
-
-          if '</head>' in html:
-              html = html.replace('</head>', tags + '\n</head>', 1)
-          else:
-              raise SystemExit('No </head> tag found in index.html')
-
-          if 'name="mobile-web-app-capable"' not in html:
-              html = html.replace('</head>', '<meta name="mobile-web-app-capable" content="yes">\n</head>', 1)
-
-          path.write_text(html, encoding='utf-8')
-          PY
-
           rm -f .icon.b64
           rm -rf .icon_parts
 
-      - name: Commit icon
-        shell: bash
+      - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
